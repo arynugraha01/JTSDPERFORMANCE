@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JTSD PERFORMANCE NOVEMBER 26&#39;</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#f2f5f7;--card:#fff;--fg:#14202b;--mut:#5d6b78;--bd:#d9e0e6;--acc:#0e7c86;--g:#1b7f4b;--gb:#dff1e7;--m:#8a5a00;--mb:#faebc8;--b:#b3261e;--bb:#fbe0dd;--n:#5d6b78;--nb:#e6ebef;--trk:#dde4ea;--on:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e161e;--card:#16212c;--fg:#e6edf3;--mut:#93a3b1;--bd:#263544;--acc:#4cc2cc;--g:#5fd48f;--gb:#173a29;--m:#f0b84a;--mb:#3d2f0e;--b:#ff8a80;--bb:#431d1a;--n:#93a3b1;--nb:#223140;--trk:#2a3a4a;--on:#06222a}}
+:root[data-theme="dark"]{--bg:#0e161e;--card:#16212c;--fg:#e6edf3;--mut:#93a3b1;--bd:#263544;--acc:#4cc2cc;--g:#5fd48f;--gb:#173a29;--m:#f0b84a;--mb:#3d2f0e;--b:#ff8a80;--bb:#431d1a;--n:#93a3b1;--nb:#223140;--trk:#2a3a4a;--on:#06222a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 14px/1.5 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-variant-numeric:tabular-nums}
+.wrap{max-width:1080px;margin:0 auto;padding:18px 14px 32px}
+h1{font-size:19px;font-weight:600;margin:0}
+.sub{color:var(--mut);margin:2px 0 14px}
+.tabs{display:inline-flex;border:1px solid var(--bd);border-radius:8px;overflow:hidden;background:var(--card);margin-bottom:14px}
+.tabs button{font:inherit;font-weight:500;padding:8px 14px;border:0;background:none;color:var(--mut);cursor:pointer}
+.tabs button+button{border-left:1px solid var(--bd)}
+.tabs button[aria-pressed="true"]{background:var(--acc);color:var(--on)}
+.tabs button:focus-visible,tr[tabindex]:focus-visible{outline:2px solid var(--acc);outline-offset:-2px}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));background:var(--card);border:1px solid var(--bd);border-radius:10px;margin-bottom:14px}
+.strip>div{padding:12px 14px;border-left:1px solid var(--bd)}
+.strip>div:first-child{border-left:0}
+.lab{color:var(--mut);font-size:12.5px}
+.big{font-size:26px;font-weight:600;line-height:1.2}
+.sm{color:var(--mut);font-size:12.5px}
+.box{background:var(--card);border:1px solid var(--bd);border-radius:10px;overflow:hidden;margin-bottom:14px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:760px}
+th,td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--bd);white-space:nowrap}
+th{font-weight:500;color:var(--mut);font-size:12.5px}
+th:first-child,td:first-child,th.l,td.l{text-align:left}
+tbody tr{cursor:pointer}
+tbody tr:hover,tbody tr.on{background:var(--nb)}
+tbody tr:last-child td{border-bottom:0}
+.nm{font-weight:500}
+.tm{color:var(--mut);font-size:12px}
+.pb{display:flex;align-items:center;gap:8px;min-width:140px}
+.trk{position:relative;flex:1;height:8px;border-radius:4px;background:var(--trk)}
+.fil{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:var(--acc)}
+.fil.lag{background:var(--b)}
+.tick{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--fg);opacity:.75}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12.5px;font-weight:500}
+.g{background:var(--gb);color:var(--g)}.m{background:var(--mb);color:var(--m)}.b{background:var(--bb);color:var(--b)}.n{background:var(--nb);color:var(--n)}
+.flag{color:var(--m);font-size:12.5px}
+tbody tr.lr td{border-bottom:0}
+tbody tr.dly{cursor:default}
+tbody tr.dly:hover{background:none}
+tbody tr.dly.on{background:var(--nb)}
+.dly td{padding:0 12px 10px;text-align:left;white-space:normal}
+.dl{position:sticky;left:0;display:flex;flex-wrap:wrap;gap:4px;width:min(calc(100vw - 58px),1000px)}
+.dc{display:inline-flex;flex-direction:column;align-items:center;min-width:34px;padding:2px 4px;border:1px solid var(--bd);border-radius:6px;font-size:12.5px;line-height:1.25}
+.dt{align-self:center;margin-right:6px;color:var(--mut);font-size:12px}
+.dc i{font-style:normal;font-size:10.5px;color:var(--mut)}
+:root{--s1:#f8c9c4;--s1t:#8f1d16;--s2:#fbd3a8;--s2t:#7a3a00;--s3:#f6ecb0;--s3t:#6b5a00;--s4:#bfe6cd;--s4t:#0f5a33}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--s1:#5a2420;--s1t:#ffb4ab;--s2:#5a3510;--s2t:#ffc58a;--s3:#4d4510;--s3t:#efe08a;--s4:#17492f;--s4t:#8fe0b0}}
+:root[data-theme="dark"]{--s1:#5a2420;--s1t:#ffb4ab;--s2:#5a3510;--s2t:#ffc58a;--s3:#4d4510;--s3t:#efe08a;--s4:#17492f;--s4t:#8fe0b0}
+.dc.s1{background:var(--s1);color:var(--s1t);border-color:transparent}
+.dc.s2{background:var(--s2);color:var(--s2t);border-color:transparent}
+.dc.s3{background:var(--s3);color:var(--s3t);border-color:transparent}
+.dc.s4{background:var(--s4);color:var(--s4t);border-color:transparent}
+.dc.s1 i,.dc.s2 i,.dc.s3 i,.dc.s4 i{color:inherit;opacity:.8}
+.dc.we,.dc.we i{font-weight:700}
+.dc.we i{opacity:1}
+#vtabs{margin-right:10px}
+@media (max-width:640px){#vtabs{margin-right:0;max-width:100%}}
+.flt{display:flex;flex-wrap:wrap;gap:8px}
+.flt input,.flt select{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:7px 10px;min-width:0}
+.flt input{flex:1 1 220px}.flt select{flex:0 1 190px;max-width:100%}
+.flt input:focus-visible,.flt select:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.cnt{margin:-6px 2px 8px}
+.jb{font-weight:400;color:var(--mut)}
+.eu{display:block;font-size:11.5px;color:var(--mut);white-space:nowrap}
+.stn{white-space:normal;min-width:170px;max-width:250px}
+#stbl th,#stbl td,#ptbl th,#ptbl td{padding:9px 10px}
+#stbl .dly td,#ptbl .dly td{padding:0 10px 10px}
+#stbl th.pw,#ptbl th.pw{white-space:normal;min-width:150px}
+#stbl .pb,#ptbl .pb{min-width:110px}
+#stbl td.nc{width:250px;min-width:220px;padding:6px 10px;white-space:normal;cursor:default}
+.nc textarea{display:block;width:100%;min-height:54px;box-sizing:border-box;font:inherit;font-size:13px;line-height:1.35;color:var(--fg);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:6px 8px;resize:vertical}
+.nc textarea:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.nc textarea[readonly]{background:transparent}
+.nc .ns{display:block;min-height:15px;margin-top:2px;font-size:11.5px;color:var(--mut)}
+.nc .ns.er{color:var(--b)}
+#nmsg{margin:-4px 2px 8px}
+#atbl tr.sub td,#atbl tr.tot td{font-weight:600;background:var(--nb);cursor:default}
+#atbl tr.tot td{border-top:2px solid var(--bd)}
+#atbl tbody tr.sub,#atbl tbody tr.tot{cursor:default}
+#atbl th,#atbl td{padding:9px 10px}
+#atbl .pb{min-width:130px}
+#atbl .dly td{padding:0 10px 12px}
+#atbl .ul{position:sticky;left:0;width:min(calc(100vw - 58px),1000px)}
+#atbl .ul h3{font-size:13px;font-weight:600;margin:8px 0 6px}
+#atbl .ut{min-width:0;width:100%}
+#atbl .ut th,#atbl .ut td{padding:6px 10px;text-align:left;white-space:normal;border-bottom:1px solid var(--bd)}
+#atbl .ut th.r,#atbl .ut td.r{text-align:right}
+#atbl .ut tbody tr{cursor:default}
+#atbl .ut tbody tr:hover{background:none}
+#atbl .ut .mono{white-space:nowrap;font-variant-numeric:tabular-nums}
+.leg{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px;font-size:12.5px;color:var(--mut)}
+.leg .dc{flex-direction:row;padding:2px 8px}
+.det{padding:14px}
+.det h2{font-size:16px;margin:0 0 2px}
+.facts{display:flex;flex-wrap:wrap;gap:6px 22px;margin:8px 0 4px}
+svg{display:block;width:100%;height:auto;max-height:230px}
+.bar{fill:var(--acc);opacity:.85}.sp{fill:var(--b)}
+.ideal{stroke:var(--fg);stroke-width:1.2;stroke-dasharray:5 4;opacity:.7}
+.ax{fill:var(--mut);font-size:10px}.lb{fill:var(--b);font-size:11px;font-weight:600}.il{fill:var(--mut);font-size:10.5px}
+.note{color:var(--mut);font-size:12.5px;max-width:78ch}
+.note p{margin:0 0 6px}
+.up label{display:block;margin:8px 0;color:var(--mut)}.up input{font:inherit;max-width:100%;margin-top:3px}.up button{font:inherit;font-weight:500;padding:8px 14px;border:0;border-radius:8px;background:var(--acc);color:var(--on);cursor:pointer}.up .sm{margin-top:8px}
+details.up>summary{list-style:none;cursor:pointer;padding:10px 14px;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;font-weight:600}
+details.up>summary::-webkit-details-marker{display:none}
+details.up>summary::before{content:"\25B8";color:var(--mut);display:inline-block;width:1em;transition:transform .15s}
+details.up[open]>summary::before{transform:rotate(90deg)}
+details.up[open]>summary{border-bottom:1px solid var(--bd)}
+details.up>summary:focus-visible{outline:2px solid var(--acc);outline-offset:-2px}
+details.up .us{flex:1 1 260px;min-width:0;font-weight:400;font-size:12.5px;color:var(--mut)}
+details.up:not([open]) .us{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Monitor performa sales leader</h1>
+<p class="sub" id="sub"></p>
+<div class="tabs" id="vtabs" role="group" aria-label="Tampilan"></div><div class="tabs" id="tabs" role="group" aria-label="Tipe penjualan"></div>
+<details class="box up" id="updet"><summary><span>Hitung dari file</span><span class="us" id="umsg">Upload Excel untuk memperbarui data. Klik untuk buka atau tutup.</span></summary><div class="det"><label>File SCAN AKTIF (sheet SOLD untuk pencapaian, sheet AKTIF untuk cek aktif belum scan)<br><input type="file" id="f1" accept=".xlsx,.xls"></label><label>File SOLD bulan lalu, opsional (untuk pencapaian V80 Lite bulan lalu)<br><input type="file" id="f2" accept=".xlsx,.xls"></label><label>File target per toko (sheet "Target Toko"). Tanpa file ini semua toko bertarget 0.<br><input type="file" id="f3" accept=".xlsx,.xls"></label><label>File target promotor (sheet "Target Promotor"). Tanpa file ini semua promotor bertarget 0.<br><input type="file" id="f4" accept=".xlsx,.xls"></label><button id="go">Hitung pencapaian</button><div class="sm" id="msg" role="status"></div></div></details>
+<div class="strip" id="strip"></div>
+<div class="leg" role="group" aria-label="Keterangan warna pencapaian harian"><span>Warna pencapaian harian dibanding target harian:</span><span class="dc s1">di bawah 50%</span><span class="dc s2">50 sampai 74%</span><span class="dc s3">75 sampai 99%</span><span class="dc s4">100% atau lebih</span><span><b>Angka tebal</b> = Sabtu dan Minggu</span></div>
+<div id="lview"><div class="box"><div class="scroll"><table id="tbl"></table></div></div></div>
+<div id="sview" hidden>
+<div class="box"><div class="det flt">
+<input type="search" id="sq" placeholder="Cari toko atau catatan" aria-label="Cari nama toko atau isi catatan" autocomplete="off">
+<select id="sl" aria-label="Filter leader"></select>
+<select id="sc" aria-label="Filter channel"></select>
+<select id="ss" aria-label="Filter status"><option value="">Semua status</option><option value="z">Belum ada penjualan</option><option value="t">Tertinggal</option><option value="w">Waspada</option><option value="j">Di jalur</option><option value="x">Tanpa target</option></select>
+<select id="sn" aria-label="Filter catatan"><option value="">Semua toko</option><option value="y">Sudah ada catatan</option><option value="n">Belum ada catatan</option></select>
+<select id="so" aria-label="Urutkan"><option value="est">Urut: estimasi terendah</option><option value="esth">Urut: estimasi tertinggi</option><option value="ach">Urut: achieve terbanyak</option><option value="tgt">Urut: target terbesar</option><option value="nm">Urut: nama toko</option></select>
+</div></div>
+<div class="sm cnt" id="scnt" role="status"></div>
+<div class="sm cnt" id="nmsg" role="status"></div>
+<div class="box"><div class="scroll"><table id="stbl"></table></div></div>
+</div>
+<div id="pview" hidden>
+<div class="box"><div class="det flt">
+<input type="search" id="pq" placeholder="Cari promotor atau toko" aria-label="Cari nama promotor atau toko" autocomplete="off">
+<select id="pl" aria-label="Filter leader"></select>
+<select id="pj" aria-label="Filter jabatan"></select>
+<select id="ps" aria-label="Filter status"><option value="">Semua status</option><option value="z">Belum ada penjualan</option><option value="t">Tertinggal</option><option value="w">Waspada</option><option value="j">Di jalur</option><option value="x">Tanpa target</option></select>
+<select id="pi" aria-label="Filter hari tanpa penjualan"><option value="">Semua promotor</option><option value="2">Tanpa jual 2 hari atau lebih</option><option value="3">Tanpa jual 3 hari atau lebih</option><option value="4">Tanpa jual 4 hari atau lebih</option><option value="5">Tanpa jual 5 hari atau lebih</option><option value="7">Tanpa jual 7 hari atau lebih</option></select>
+<select id="po" aria-label="Urutkan"><option value="est">Urut: estimasi terendah</option><option value="esth">Urut: estimasi tertinggi</option><option value="idl">Urut: paling lama tidak jual</option><option value="ach">Urut: achieve terbanyak</option><option value="tgt">Urut: target terbesar</option><option value="nm">Urut: nama promotor</option></select>
+</div></div>
+<div class="sm cnt" id="pcnt" role="status"></div>
+<div class="box"><div class="scroll"><table id="ptbl"></table></div></div>
+</div>
+<div id="aview" hidden><div class="box"><div class="scroll"><table id="atbl"></table></div></div></div>
+<div class="box" id="detbox" hidden><div class="det" id="det"></div></div>
+<div class="note" id="note"></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const DEMO=null;
+const DEMO_S=null;
+const DEMO_A=null;
+const DEMO_U=null;
+const DEMO_P=null;
+let D,N,M,TG;
+function setD(d){D=d;N=d.days;M=d.total;TG=N/M;sel=null}
+let SRC='Contoh tampilan memakai data dari Excel revisi. Unggah file di atas untuk menghitung dari data mentah.';
+const $=s=>document.querySelector(s);
+const fm=(x,d=0)=>x==null?'–':x.toLocaleString('id-ID',{maximumFractionDigits:d});
+const pc=x=>x==null?'–':fm(x*100,1)+'%';
+const estc=r=>`${pc(r.estp)}<span class="eu">≈ ${fm(r.est,Math.abs(r.est)<10?1:0)} unit</span>`;
+const NAMES={all:'Semua tipe',m3:'3MIO+',v80:'V80 Lite'};
+const TT={all:3500};
+let tab='all',sel=null;
+function calc(r){
+  const t=r.t,a=r.a,s=[...r.d].sort((x,y)=>x-y),med=s[Math.floor(s.length/2)],mx=s[s.length-1];
+  return {...r,pct:t?a/t:null,est:a/N*M,estp:t?a/N*M/t:null,gap:a-t*TG,need:t?Math.max(t-a,0)/(M-N):null,avg:a/N,spike:(mx>=30&&mx>=5*med)?r.d.indexOf(mx)+1:0};
+}
+function insentif(r){const e=r.estp;return e==null?['–','n']:e>.9?['Sesuai %','g']:e>.7?['Ins 50%','m']:['HANGUS','b'];}
+function bonus(r){if(r.estp==null)return['–','n'];if(r.pct>=1)return['Tercapai','g'];return r.estp>=1?['On track','m']:['HANGUS','b'];}
+function data(){
+  const L=D.types[tab].map(calc),L3=D.types.m3.map(calc);
+  return L.map((r,i)=>({...r,i,st:tab==='v80'?bonus(r):insentif(L3[i])}));
+}
+function total(L){
+  const d=Array(N).fill(0);L.forEach(r=>r.d.forEach((v,k)=>d[k]+=v));
+  return calc({n:'TSD',t:L.reduce((s,r)=>s+r.t,0),a:L.reduce((s,r)=>s+r.a,0),d});
+}
+function renderEmpty(){
+  $('#vtabs').innerHTML='';['#lview','#sview','#pview','#aview'].forEach(q=>$(q).hidden=true);
+  $('#tabs').style.display='none';$('.leg').style.display='none';$('#detbox').hidden=true;$('#strip').innerHTML='';
+  $('#strip').style.display='none';$('#sub').textContent='Belum ada data.';
+  $('#note').innerHTML='<p>Buka bagian Hitung dari file di atas, pilih file SCAN AKTIF (wajib) dan file target toko serta target promotor, lalu klik Hitung pencapaian. Semua perhitungan dilakukan di browser Anda, file tidak dikirim ke mana pun.</p><p>Hasil hitungan diingat di browser dan perangkat yang Anda pakai. Di perangkat lain, unggah ulang filenya.</p>';
+}
+function render(){
+  if(!D){renderEmpty();return}
+  $('#strip').style.display='';
+  $('#vtabs').innerHTML=[['leader','Per leader'],['store','Per toko'],['pro','Per promotor'],['act','Follow up aktivasi'],['uns','Aktif belum scan']].map(([k,l])=>`<button data-v="${k}" aria-pressed="${k===view}">${l}</button>`).join('');
+  $('#lview').hidden=view!=='leader';$('#sview').hidden=view!=='store';$('#pview').hidden=view!=='pro';$('#aview').hidden=view!=='act'&&view!=='uns';
+  const wide=view==='act'||view==='uns';$('#tabs').style.display=wide?'none':'';$('.leg').style.display=wide?'none':'';
+  if(view==='store')renderStore();else if(view==='pro')renderPro();else if(view==='act')renderAct();else if(view==='uns')renderUns();else renderLeader();
+}
+function renderLeader(){
+  $('#sub').textContent='Data sampai tanggal '+N+' dari '+M+' hari. Time gone '+pc(TG)+'.';
+  $('#tabs').innerHTML=Object.keys(NAMES).map(k=>`<button data-k="${k}" aria-pressed="${k===tab}">${NAMES[k]}</button>`).join('');
+  const L=data(),T0=total(L),T=TT[tab]?calc({...T0,t:TT[tab]}):T0;
+  const cnt=k=>L.filter(r=>r.st[0]===k).length;
+  const labs=tab==='v80'?['Tercapai','On track','HANGUS']:['Sesuai %','Ins 50%','HANGUS'];
+  const warn=L.filter(r=>r.spike||(r.estp!=null&&r.estp<.7));
+  $('#strip').innerHTML=
+   `<div><div class="lab">Pencapaian TSD, ${NAMES[tab]}</div><div class="big">${pc(T.pct)}</div><div class="sm">${fm(T.a)} dari target ${fm(T.t)}</div><div class="sm">Target per hari: <b>${fm(T.need,1)}</b> untuk sisa ${M-N} hari (ideal ${fm(T.t/M,1)} per hari)</div></div>`+
+   `<div><div class="lab">Estimasi akhir periode</div><div class="big">${pc(T.estp)}</div><div class="sm">sekitar ${fm(T.est)}, ${T.gap>=0?'di depan':'di belakang'} jalur ${fm(Math.abs(T.gap))}</div></div>`+
+   `<div><div class="lab">${tab==='v80'?'Bonus V80 Lite':'Status insentif (dari 3MIO+)'}</div><div class="big">${labs.map(k=>cnt(k)).join(' / ')}</div><div class="sm">${labs.join(' / ')}</div></div>`+
+   `<div><div class="lab">Perlu perhatian</div><div class="big">${warn.length}</div><div class="sm">${warn.length?warn.map(r=>r.n.split(' ')[0]).join(', '):'tidak ada'}</div></div>`;
+  const S=[...L].sort((a,b)=>(a.estp==null)-(b.estp==null)||a.estp-b.estp);
+  $('#tbl').innerHTML=`<thead><tr><th>Leader</th><th class="l">Pencapaian (garis hitam: time gone)</th><th>Target</th><th>Achieve</th><th>Perlu per hari</th><th>Estimasi</th><th class="l">Status</th><th class="l"></th></tr></thead><tbody>`+
+   S.map(r=>`<tr tabindex="0" data-i="${r.i}" class="lr ${sel===r.i?'on':''}"><td><div class="nm">${r.n}</div><div class="tm">${r.g}</div></td>`+
+   `<td class="l"><div class="pb"><div class="trk"><div class="fil ${r.pct!=null&&r.pct<TG?'lag':''}" style="width:${Math.min(r.pct||0,1)*100}%"></div><div class="tick" style="left:${TG*100}%"></div></div><span>${pc(r.pct)}</span></div></td>`+
+   `<td>${fm(r.t)}</td><td>${fm(r.a)}</td><td>${fm(r.need,1)}</td><td>${estc(r)}</td><td class="l"><span class="pill ${r.st[1]}">${r.st[0]}</span></td><td class="l flag">${r.spike?'Lonjakan tgl '+r.spike:''}</td></tr>`+daily(r)).join('')+`</tbody>`;
+  const r=L.find(x=>x.i===sel);
+  $('#detbox').hidden=!r;
+  if(r)$('#det').innerHTML=detail(r);
+  $('#note').innerHTML=`<p>Deretan angka di bawah nama leader adalah pencapaian per tanggal. Warna tiap tanggal menunjukkan pencapaian dibanding target harian leader itu (target bulanan ÷ ${M} hari), lihat keterangan di atas tabel. Kolom Perlu per hari tetap memakai sisa target ÷ sisa hari.</p><p>Estimasi = rata-rata harian × ${M} hari. Insentif all tipe dan 3MIO+ mengikuti estimasi 3MIO+: di atas 90% sesuai %, di atas 70% Ins 50%, selebihnya hangus. Unit dihitung jika di-scan dan aktif di bulan yang sama. V80 Lite mendapat bonus 1 juta jika achieve 100%; pencapaian V80 Lite bulan lalu ikut dihitung di tanggal 1. Target TSD semua tipe 3.500 (sesuai Excel), tipe lain dijumlah dari target leader.</p><p>${SRC}</p>`;
+}
+function daily(r,at='data-i'){
+  const tg=r.t>0?r.t/M:null,tf=tg==null?'':fm(tg,tg<1?2:1);
+  const band=v=>{if(tg==null)return 0;const q=v/tg;return q>=1?4:q>=.75?3:q>=.5?2:1};
+  const dn=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const c=r.d.map((v,i)=>{const b=band(v),w=D.y?new Date(D.y,D.m-1,i+1).getDay():-1,we=w===0||w===6;return `<span class="dc${b?' s'+b:''}${we?' we':''}" title="${w>=0?dn[w]+', tanggal ':'Tanggal '}${i+1}: ${v}${tg!=null?' ('+Math.round(v/tg*100)+'% dari target harian '+tf+')':''}"><i>${i+1}</i>${v}</span>`}).join('');
+  const lab=tg!=null?`<span class="dt">Target harian ${tf}</span>`:'';
+  return `<tr class="dly ${sel===r.i?'on':''}" ${at}="${r.i}"><td colspan="8"><div class="dl" role="group" aria-label="Pencapaian harian ${esc(r.n)}">${lab}${c}</div></td></tr>`;
+}
+function detail(r){
+  const W=640,H=170,p=22,ideal=r.t/M,mx=Math.max(...r.d,ideal)*1.15||1,bw=(W-p*2)/N,y=v=>H-p-v/mx*(H-p*2);
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Pencapaian harian ${esc(r.n)}">`;
+  r.d.forEach((v,i)=>{const x=p+i*bw;s+=`<rect class="${r.spike===i+1?'sp':'bar'}" x="${x+2}" y="${y(v)}" width="${bw-4}" height="${H-p-y(v)}"/><text class="ax" x="${x+bw/2}" y="${H-7}" text-anchor="middle">${i+1}</text>`;if(r.spike===i+1)s+=`<text class="lb" x="${x+bw/2}" y="${y(v)-4}" text-anchor="middle">${v}</text>`;});
+  s+=`<line class="ideal" x1="${p}" x2="${W-p}" y1="${y(ideal)}" y2="${y(ideal)}"/><text class="il" x="${W-p}" y="${y(ideal)-4}" text-anchor="end">ideal ${fm(ideal,1)} per hari</text></svg>`;
+  return `<h2>${esc(r.n)}</h2><div class="tm">${esc(r.g)}, ${NAMES[tab]}</div><div class="facts"><span>Rata-rata <b>${fm(r.avg,1)}</b> per hari</span><span>Selisih dari jalur <b>${r.gap>=0?'+':''}${fm(r.gap,1)}</b></span><span>Perlu <b>${fm(r.need,1)}</b> per hari untuk sisa ${M-N} hari</span></div>`+s+(r.spike?`<p class="note">Tanggal ${r.spike} mencatat ${r.d[r.spike-1]}, jauh di atas hari lain. Estimasi memakai rata-rata biasa, jadi lonjakan ini menggelembungkan proyeksi.</p>`:'');
+}
+document.addEventListener('click',e=>{
+  if(e.target.closest('.nc'))return;
+  const v=e.target.closest('[data-v]');if(v){view=v.dataset.v;sel=null;render();return;}
+  const b=e.target.closest('[data-k]');if(b){tab=b.dataset.k;sel=null;render();return;}
+  const t=e.target.closest('tr[data-i],tr[data-s]');if(t){const i=+(t.dataset.i!==undefined?t.dataset.i:t.dataset.s);sel=sel===i?null:i;render();}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'){if(e.target.closest('.nc'))return;const t=e.target.closest('tr[data-i],tr[data-s]');if(t)t.click();}});
+['#pq','#pl','#pj','#ps','#pi','#po'].forEach(s=>$(s).addEventListener('input',()=>{pq=$('#pq').value;plf=$('#pl').value;pjf=$('#pj').value;psf=$('#ps').value;pif=$('#pi').value;pof=$('#po').value;render();}));
+['#sq','#sl','#sc','#ss','#sn','#so'].forEach(s=>$(s).addEventListener('input',()=>{sq=$('#sq').value;sl=$('#sl').value;sc=$('#sc').value;ss=$('#ss').value;snf=$('#sn').value;so=$('#so').value;render();}));
+
+const TEAM={'ASBY ZAY REZA':['JAKTIM 1',310,182,26],'BANGKIT DANU PRAYOGI':['JAKTIM 1',365,247,37],'BAYU SETIAWAN':['JAKTIM 1',445,305,62],'WILDAN NUROHMAN':['JAKTIM 1',473,326,42],'M. FAHRULROZI':['JAKTIM 2',343,227,52],'BAGAS TRI PRASATRIO':['JAKTIM 2',300,161,47],'JUNNY CHRISTIAN MANDAGI':['JAKTIM 2',340,230,40],'ANDIKO PUTRA':['DEPOK',329,202,45],'ERLANGGA':['DEPOK',150,150,25],'RIO NURWIDIA':['DEPOK',454,300,45],'GEMILANG':['GEMILANG',165,165,0]};
+const key=s=>String(s).trim().toLowerCase();
+const rd=f=>new Promise((ok,no)=>{const r=new FileReader();r.onload=e=>{try{ok(XLSX.read(e.target.result,{type:'array',cellDates:true}))}catch(x){no(x)}};r.onerror=()=>no(r.error);r.readAsArrayBuffer(f)});
+function sheet(wb,name){const sn=wb.SheetNames.find(n=>key(n)===name)||(name==='sold'?wb.SheetNames[0]:null);return sn?XLSX.utils.sheet_to_json(wb.Sheets[sn],{defval:null}):null}
+function col(o,...ns){for(const n of ns){const k=Object.keys(o).find(x=>key(x)===n);if(k!==undefined)return o[k]}return null}
+function ymd(v){if(v==null||v==='')return null;if(v instanceof Date){v=new Date(v.getTime()+432e5);return[v.getFullYear(),v.getMonth()+1,v.getDate()]}const m=String(v).match(/(\d{4})-(\d{1,2})-(\d{1,2})/);return m?[+m[1],+m[2],+m[3]]:null}
+function norm(o){
+  const a=String(col(o,'area penjualan')||''),s=String(col(o,'sales','sales/pic')||'').trim().toUpperCase();
+  const q=col(o,'jumlah');
+  return {s:nk(col(o,'nama toko')),sn:String(col(o,'nama toko')||'').replace(/\s+/g,' ').trim(),l:(/gemilang/i.test(a)||s==='0'||s==='GEMILANG')?'GEMILANG':s,sc:ymd(col(o,'tanggal penjualan')),ac:ymd(col(o,'tanggal aktivasi')),q:q==null?1:Number(q)||0,im:String(col(o,'imei')==null?'':col(o,'imei')),pn:nk(col(o,'nama pelapor')),pnm:String(col(o,'nama pelapor')||'').replace(/\s+/g,' ').trim(),pj:String(col(o,'jabatan pelapor')||''),pk:String(col(o,'produk (sku)','model/versi')||''),p:Number(col(o,'harga retail (srp)'))||0,v:/v80 lite/i.test(String(col(o,'model/versi')||''))};
+}
+function build(rows,prev,tgt,ptg,aktif){
+  const R=rows.map(norm);let ym=0;
+  R.forEach(r=>{if(r.sc)ym=Math.max(ym,r.sc[0]*100+r.sc[1])});
+  if(!ym)throw new Error('tanggal penjualan tidak terbaca');
+  const Y=Math.floor(ym/100),Mo=ym%100,tot=new Date(Y,Mo,0).getDate();
+  const inM=(x,y,m)=>x&&x[0]===y&&x[1]===m;
+  let N=0;R.forEach(r=>{if(inM(r.sc,Y,Mo))N=Math.max(N,r.sc[2])});
+  const names=Object.keys(TEAM),T={all:[],m3:[],v80:[]};
+  names.forEach(n=>['all','m3','v80'].forEach((k,i)=>T[k].push({n:n.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase()),g:TEAM[n][0],t:TEAM[n][i+1],d:Array(N).fill(0),a:0})));
+  const tl=tgt||defTgt(),SM=new Map(),mk=()=>[Array(N).fill(0),Array(N).fill(0),Array(N).fill(0)];
+  tl.forEach(x=>SM.set(nk(x.n),{n:x.n,l:x.l,ch:x.ch,ar:x.ar,t:x.t,d:mk(),nt:0}));
+  const getS=r=>{let s=SM.get(r.s);if(!s){s={n:r.sn||'(tanpa nama)',l:r.l?tc(r.l):'–',ch:/\(erafone\)/i.test(r.sn)?'ERAFONE':/\(erablue\)/i.test(r.sn)?'ERABLUE':'',ar:'',t:[0,0,0],d:mk(),nt:1};SM.set(r.s,s)}return s};
+  const addS=(r,day)=>{const s=getS(r);s.d[0][day]+=r.q;if(r.p>=3e6)s.d[1][day]+=r.q;if(r.v)s.d[2][day]+=r.q};
+  const PM=new Map(),PAU=new Set();(ptg||defPtg()).forEach(x=>PM.set(x.k,{k:x.k,n:x.n,s:x.s,l:x.l,j:x.j,t:x.t,jn:x.jn,d:mk(),nt:0}));
+  const pkey=r=>{const k=r.pn||'',a=PAL[k];if(a&&PM.has(a)){PAU.add(tc(k)+' = '+tc(a));return a}return k};
+  const getP=r=>{const k=pkey(r);let p=PM.get(k);if(!p){p={k,n:r.pnm?tc(r.pnm):'(tanpa nama pelapor)',s:r.sn,l:r.l?tc(r.l):'–',j:jab(r.pj),t:[0,0,0],d:mk(),nt:1};PM.set(k,p)}return p};
+  const addP=(r,day)=>{const p=getP(r);if(p.nt)(p.ss=p.ss||new Set()).add(r.sn);p.d[0][day]+=r.q;if(r.p>=3e6)p.d[1][day]+=r.q;if(r.v)p.d[2][day]+=r.q};
+  let used=0,noAct=0,oldAct=0,unk={};
+  const AG={},AU=[];names.forEach(n=>AG[n]={tot:0,tidak:0,lain:0,aktif:0});
+  R.forEach(r=>{
+    if(!inM(r.sc,Y,Mo))return;
+    const kn=AG[r.l]?r.l:'?',g=AG[kn]||(AG[kn]={tot:0,tidak:0,lain:0,aktif:0});
+    g.tot+=r.q;
+    if(!r.ac){g.tidak+=r.q;if(r.q>0)AU.push({l:kn,s:r.sn,p:r.pk,d:r.sc[2],i:r.im})}else if(!inM(r.ac,Y,Mo))g.lain+=r.q;else g.aktif+=r.q;
+    if(!r.ac){noAct+=r.q;return}
+    if(!inM(r.ac,Y,Mo)){oldAct+=r.q;return}
+    addS(r,r.sc[2]-1);addP(r,r.sc[2]-1);
+    const i=names.indexOf(r.l);if(i<0){unk[r.l]=(unk[r.l]||0)+r.q;return}
+    const d=r.sc[2]-1;used+=r.q;T.all[i].d[d]+=r.q;if(r.p>=3e6)T.m3[i].d[d]+=r.q;if(r.v)T.v80[i].d[d]+=r.q;
+  });
+  let carry=0;
+  if(prev){const pY=Mo===1?Y-1:Y,pM=Mo===1?12:Mo-1;
+    prev.map(norm).forEach(r=>{if(!r.v||!inM(r.sc,pY,pM)||!inM(r.ac,pY,pM))return;getS(r).d[2][0]+=r.q;getP(r).d[2][0]+=r.q;const i=names.indexOf(r.l);if(i<0)return;T.v80[i].d[0]+=r.q;carry+=r.q})}
+  Object.values(T).forEach(L=>L.forEach(r=>r.a=r.d.reduce((s,v)=>s+v,0)));
+  const u=Object.keys(unk).length?' Leader tidak dikenal (tidak dihitung): '+Object.entries(unk).map(([k,v])=>k+' '+v).join(', ')+'.':'';
+  const ntN=[...SM.values()].filter(s=>s.nt).length;
+  const ts=(tgt?'Target toko dari file yang diunggah.':'Target toko belum diunggah, jadi semua toko bertarget 0.')+` ${ntN} toko di data penjualan tidak ada di file target (target 0).`;
+  PM.forEach(p=>{if(p.ss){if(p.ss.size>1)p.s=p.ss.size+' toko';delete p.ss}});
+  const pxs=[...PM.values()].filter(p=>p.nt&&p.d[0].some(v=>v)),pxu=pxs.reduce((x,p)=>x+p.d[0].reduce((a,b)=>a+b,0),0);
+  const pts=(ptg?'Target promotor dari file yang diunggah.':'Target promotor belum diunggah, jadi semua promotor bertarget 0.')+` ${pxs.length} pelapor di data penjualan tidak ada di file target (target 0), total ${pxu} unit.`+(PAU.size?' Dianggap orang yang sama: '+[...PAU].join(', ')+'.':'');
+  AU.sort((a,b)=>a.d-b.d||a.s.localeCompare(b.s));
+  let U=null,uMsg=' Sheet AKTIF tidak ditemukan di file, jadi tab Aktif belum scan kosong.';
+  if(aktif&&aktif.length){
+    const mn=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'],SI=new Map();
+    R.forEach(r=>{if(r.im){let l=SI.get(r.im);if(!l){l=[];SI.set(r.im,l)}l.push(r)}});
+    const UG={},UU=[];names.forEach(n=>UG[n]={tot:0,un:0});let ud=N;
+    aktif.forEach(o=>{
+      const r=norm(o),dl=String(col(o,'nama dealer')||'').replace(/\s+/g,' ').trim();
+      if(r.q<=0)return;
+      const kn=UG[r.l]?r.l:'?',g=UG[kn]||(UG[kn]={tot:0,un:0});
+      g.tot+=r.q;
+      if(r.ac&&r.ac[0]===Y&&r.ac[1]===Mo)ud=Math.max(ud,r.ac[2]);
+      if(r.sc)return;
+      g.un+=r.q;
+      const h=SI.get(r.im);let x='';
+      if(h){const sm=h.reduce((t,v)=>t+v.q,0),last=h.filter(v=>v.sc).sort((a,b)=>(a.sc[0]*372+a.sc[1]*31+a.sc[2])-(b.sc[0]*372+b.sc[1]*31+b.sc[2])).pop();
+        x='Di SOLD ada catatan scan '+(sm>0?'+'+sm:sm)+(last?' tgl '+last.sc[2]+' '+mn[last.sc[1]-1]+(last.pnm?' oleh '+tc(last.pnm):''):'')}
+      UU.push({l:kn,d:dl,p:r.pk,a:r.ac,i:r.im,x})
+    });
+    const ak=a=>a?a[0]*372+a[1]*31+a[2]:9e9;
+    UU.sort((a,b)=>ak(a.a)-ak(b.a)||a.d.localeCompare(b.d));
+    U={y:Y,m:Mo,days:ud,total:tot,rows:names.map(n=>({n:n.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase()),k:n,g:TEAM[n][0],...UG[n]})).concat(UG['?']?[{n:'Leader tidak dikenal',k:'?',g:'?',...UG['?']}]:[]),units:UU};
+    uMsg=' Aktif belum di-scan: '+UU.length+' unit.'}
+  const A={y:Y,m:Mo,days:N,total:tot,rows:names.map(n=>({n:n.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase()),k:n,g:TEAM[n][0],...AG[n]})).concat(AG['?']?[{n:'Leader tidak dikenal',k:'?',g:'?',...AG['?']}]:[]),units:AU};
+  return {A,D:{y:Y,m:Mo,days:N,total:tot,types:T},S:{y:Y,m:Mo,days:N,total:tot,stores:[...SM.values()]},P:{y:Y,m:Mo,days:N,total:tot,rows:[...PM.values()]},U,pts,ts,msg:`Dihitung dari file: ${used} unit masuk pencapaian. Tidak dihitung: ${noAct} belum aktif, ${oldAct} aktif di bulan lain.`+(prev?` Pencapaian V80 Lite bulan lalu: ${carry} unit, dicatat di tanggal 1.`:'')+u+uMsg};
+}
+let view='leader',ST=null,sq='',sl='',sc='',ss='',snf='',so='est',STSRC='Target toko dari file TARGET_JSD_NOV_2026.xlsx. Pencapaian dari data SCAN AKTIF 1 sampai 17 November 2026, ditambah V80 Lite Oktober.';
+const nk=s=>String(s==null?'':s).replace(/\s+/g,' ').trim().toUpperCase();
+const tc=s=>String(s).toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const TI={all:0,m3:1,v80:2};
+const PAL={'AZIS RIYANTO':'AZIZ RIYANTO','ARI PRIYANGGI':'ARI PRAYINGGI'};
+const jab=s=>{s=String(s||'');return/promotor b/i.test(s)?'Promotor B':/store staff/i.test(s)?'Store staff':/\brm\b/i.test(s)?'RM':/\bsales\b/i.test(s)?'Sales':/promotor/i.test(s)?'Promotor A':'Lainnya'};
+function leadKey(s){const k=nk(s);if(!k)return'–';const t=Object.keys(TEAM).find(x=>x===k||x.startsWith(k+' ')||k.startsWith(x+' '));return tc(t||k)}
+const defPtg=()=>!DEMO_P?[]:DEMO_P.rows.filter(r=>!r.nt).map(r=>({k:r.k,n:r.n,s:r.s,l:r.l,j:r.j,t:r.t,jn:r.jn}));
+function parsePtg(rows){const seen=new Set(),o=[];rows.forEach(r=>{const nm=String(col(r,'nama')||'').replace(/\s+/g,' ').trim(),k=nk(nm);if(!k||seen.has(k))return;seen.add(k);o.push({k,n:tc(nm),s:String(col(r,'toko')||'').replace(/\s+/g,' ').trim(),l:leadKey(col(r,'sales')),j:jab(col(r,'subjabatan')),t:[Number(col(r,'alltype'))||0,Number(col(r,'3mio+'))||0,Number(col(r,'v80lite'))||0],jn:ymd(col(r,'tanggal join'))})});return o}
+const defTgt=()=>!DEMO_S?[]:DEMO_S.stores.filter(s=>!s.nt).map(s=>({n:s.n,l:s.l,ch:s.ch,ar:s.ar,t:s.t}));
+function parseTgt(rows){const o=[];rows.forEach(r=>{const n=nk(col(r,'nama toko'));if(!n)return;o.push({n:String(col(r,'nama toko')).replace(/\s+/g,' ').trim(),l:tc(String(col(r,'sales baru','sales')||'').trim()),ch:String(col(r,'channel')||'').trim(),ar:String(col(r,'new area')||'').trim(),t:[Number(col(r,'target at'))||0,Number(col(r,'target 3mio+'))||0,Number(col(r,'v80 lite'))||0]})});return o}
+function fill(id,all,vals){$(id).innerHTML=`<option value="">${all}</option>`+vals.map(v=>`<option>${esc(v)}</option>`).join('')}
+function setS(s){ST=s;sq=sl=sc=ss=snf='';so='est';$('#sq').value='';$('#ss').value='';$('#sn').value='';$('#so').value='est';
+  fill('#sl','Semua leader',[...new Set(s.stores.map(x=>x.l))].sort());
+  fill('#sc','Semua channel',[...new Set(s.stores.map(x=>x.ch).filter(Boolean))].sort());}
+function stStatus(r){if(!(r.t>0))return['Tanpa target','n','x'];if(r.a<=0)return['Belum ada penjualan','b','z'];const e=r.estp;return e>=1?['Di jalur','g','j']:e>=.7?['Waspada','m','w']:['Tertinggal','b','t']}
+function sdata(){const k=TI[tab];return ST.stores.map((s,i)=>{const d=s.d[k],r=calc({n:s.n,g:s.l+(s.ch?' · '+s.ch:''),t:s.t[k],d,a:d.reduce((x,y)=>x+y,0)});return {...r,spike:0,i,l:s.l,ch:s.ch,nt:s.nt,st:stStatus(r)}})}
+function renderStore(){
+  $('#sub').textContent='Data sampai tanggal '+N+' dari '+M+' hari. Time gone '+pc(TG)+'.';
+  $('#tabs').innerHTML=Object.keys(NAMES).map(k=>`<button data-k="${k}" aria-pressed="${k===tab}">${NAMES[k]}</button>`).join('');
+  const all=sdata(),hasT=all.filter(r=>r.t>0);
+  const sumA=hasT.reduce((s,r)=>s+r.a,0),sumT=hasT.reduce((s,r)=>s+r.t,0),T=calc({n:'Toko',t:sumT,a:sumA,d:Array(N).fill(0)});
+  const jalur=hasT.filter(r=>r.a>0&&r.estp>=1).length,nol=hasT.filter(r=>r.a<=0).length;
+  const ex=all.filter(r=>!(r.t>0)&&r.a>0),exA=ex.reduce((s,r)=>s+r.a,0);
+  $('#strip').innerHTML=
+   `<div><div class="lab">Pencapaian toko, ${NAMES[tab]}</div><div class="big">${pc(T.pct)}</div><div class="sm">${fm(T.a)} dari target ${fm(T.t)} di ${fm(hasT.length)} toko</div>${exA?`<div class="sm">Belum termasuk ${fm(exA)} unit dari ${fm(ex.length)} toko tanpa target</div>`:''}</div>`+
+   `<div><div class="lab">Estimasi akhir periode</div><div class="big">${pc(T.estp)}</div><div class="sm">sekitar ${fm(T.est)} unit dari target ${fm(T.t)}</div></div>`+
+   `<div><div class="lab">Toko di jalur</div><div class="big">${fm(jalur)}</div><div class="sm">dari ${fm(hasT.length)} toko ber-target, estimasi 100% atau lebih</div></div>`+
+   `<div><div class="lab">Belum ada penjualan</div><div class="big">${fm(nol)}</div><div class="sm">toko ber-target tanpa satu unit pun sampai tanggal ${N}</div></div>`;
+  const q=sq.trim().toUpperCase();
+  const F=all.filter(r=>(!q||r.n.toUpperCase().includes(q)||noteText(r.n).toUpperCase().includes(q))&&(!sl||r.l===sl)&&(!sc||r.ch===sc)&&(!ss||r.st[2]===ss)&&(!snf||(snf==='y')===hasNote(r.n)));
+  const cmp={est:(a,b)=>((a.t>0)?0:1)-((b.t>0)?0:1)||(a.t>0?a.estp-b.estp:b.a-a.a)||b.t-a.t||a.n.localeCompare(b.n),esth:(a,b)=>((a.t>0)?0:1)-((b.t>0)?0:1)||(a.t>0?b.estp-a.estp:b.a-a.a)||b.t-a.t||a.n.localeCompare(b.n),ach:(a,b)=>b.a-a.a||a.n.localeCompare(b.n),tgt:(a,b)=>b.t-a.t||a.n.localeCompare(b.n),nm:(a,b)=>a.n.localeCompare(b.n)}[so];
+  F.sort(cmp);
+  $('#scnt').textContent='Menampilkan '+fm(F.length)+' dari '+fm(all.length)+' toko';
+  const row=r=>`<tr tabindex="0" data-s="${r.i}" class="${sel===r.i?'lr on':''}"><td class="stn"><div class="nm">${esc(r.n)}</div><div class="tm">${esc(r.l)}${r.ch?' · '+esc(r.ch):''}</div></td>`+
+   `<td class="l"><div class="pb"><div class="trk"><div class="fil ${r.t>0&&r.pct<TG?'lag':''}" style="width:${Math.min(r.pct||0,1)*100}%"></div><div class="tick" style="left:${TG*100}%"></div></div><span>${pc(r.pct)}</span></div></td>`+
+   `<td>${fm(r.t)}</td><td>${fm(r.a)}</td><td>${fm(r.need,1)}</td><td>${estc(r)}</td><td class="l"><span class="pill ${r.st[1]}">${r.st[0]}</span></td>${ncell(r)}</tr>`;
+  $('#stbl').innerHTML=`<thead><tr><th>Toko</th><th class="l pw">Pencapaian (garis hitam: time gone)</th><th>Target</th><th>Achieve</th><th>Perlu per hari</th><th>Estimasi</th><th class="l">Status</th><th class="l">Catatan</th></tr></thead><tbody>`+
+   (F.length?F.map(r=>row(r)+(sel===r.i?daily(r,'data-s'):'')).join(''):`<tr><td colspan="8" class="l">Tidak ada toko yang cocok. Ubah kata kunci atau filter.</td></tr>`)+`</tbody>`;
+  autosizeAll();nline();
+  const r=all.find(x=>x.i===sel);
+  $('#detbox').hidden=!r;
+  if(r)$('#det').innerHTML=detail(r);
+  $('#note').innerHTML=`<p>Pencapaian per toko memakai aturan yang sama dengan per leader: unit dihitung jika di-scan dan aktif di bulan yang sama, dan V80 Lite bulan lalu dicatat di tanggal 1. Toko yang tidak ada di file target diberi target 0 dan berstatus Tanpa target.</p><p>Status: Di jalur = estimasi 100% atau lebih, Waspada = 70 sampai 99%, Tertinggal = di bawah 70%, Belum ada penjualan = punya target tetapi belum ada unit. Klik satu toko untuk melihat pencapaian per tanggal.</p><p>Catatan tersimpan otomatis setelah Anda berhenti mengetik atau berpindah dari kolomnya. Catatan mengikuti nama toko, bukan bulan, jadi tetap ada saat data bulan berikutnya dihitung.</p><p>${esc(STSRC)}</p>`;
+}
+$('#go').onclick=async()=>{
+  const m=$('#msg'),f1=$('#f1').files[0],f2=$('#f2').files[0],f3=$('#f3').files[0],f4=$('#f4').files[0];
+  if(typeof XLSX==='undefined'){m.textContent='Pembaca Excel tidak termuat. Cek koneksi internet lalu muat ulang halaman.';return}
+  if(!f1){m.textContent='Pilih file SCAN AKTIF dulu.';return}
+  m.textContent='Menghitung...';
+  try{
+    const wb1=await rd(f1),rows=sheet(wb1,'sold'),ak=sheet(wb1,'aktif');
+    if(!rows||!rows.length){m.textContent='Sheet SOLD tidak ditemukan atau kosong.';return}
+    let tgt=null;
+    if(f3){const wb=await rd(f3);const tr=sheet(wb,'target toko')||XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:null});tgt=parseTgt(tr);if(!tgt.length){m.textContent='File target tidak berisi kolom Nama toko.';return}}
+    let ptg=null;
+    if(f4){const pr=sheet(await rd(f4),'target promotor');if(!pr){m.textContent='Sheet "Target Promotor" tidak ditemukan di file target promotor.';return}ptg=parsePtg(pr);if(!ptg.length){m.textContent='File target promotor tidak berisi kolom Nama.';return}}
+    const prev=f2?sheet(await rd(f2),'sold'):null,r=build(rows,prev,tgt,ptg,ak);
+    applyData(r,true);let t=r.msg+' '+r.ts+' '+r.pts;m.textContent=t+' Menyimpan…';
+    let how;try{how=await saveSnap(r)}catch(e){how='err:'+((e&&e.code)||'')}
+    t+=' '+snapNote(how);m.textContent=t;$('#umsg').textContent=t;$('#updet').open=false;
+  }catch(e){m.textContent='Gagal membaca file: '+e.message}
+};
+/* ===== Follow up aktivasi ===== */
+let AD=null;
+const MON=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const AAREA={'DEPOK':'602 JKTS DEPOK','JAKTIM 2':'602 JKTS MC','JAKTIM 1':'602 JKTT MC','GEMILANG':'602 JKTS GEMILANG'};
+const AGRP=['DEPOK','JAKTIM 2','JAKTIM 1','GEMILANG','?'];
+const AORD=['ANDIKO PUTRA','ERLANGGA','RIO NURWIDIA','M. FAHRULROZI','BAGAS TRI PRASATRIO','JUNNY CHRISTIAN MANDAGI','ASBY ZAY REZA','BANGKIT DANU PRAYOGI','BAYU SETIAWAN','WILDAN NUROHMAN','GEMILANG'];
+function setA(a){AD=a}
+function actDetail(r){
+  const U=AD.units.filter(u=>u.l===r.k);
+  if(!U.length)return `<div class="ul"><h3>${esc(r.n)}: semua unit yang di-scan sudah aktif.</h3></div>`;
+  const mo=MON[AD.m-1];
+  return `<div class="ul"><h3>${esc(r.n)}: ${fm(U.length)} unit belum aktif, urut dari scan terlama</h3><table class="ut"><thead><tr><th>Toko</th><th>Produk</th><th>Tgl scan</th><th class="r">Umur</th><th>IMEI</th></tr></thead><tbody>`+
+   U.map(u=>`<tr><td>${esc(u.s)}</td><td>${esc(u.p)}</td><td class="mono">${u.d} ${mo}</td><td class="r mono">${AD.days-u.d} hari</td><td class="mono">${esc(u.i)}</td></tr>`).join('')+`</tbody></table></div>`;
+}
+const pa=x=>x==null?'–':(x*100).toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';
+function renderAct(){
+  const A=AD,rows=A.rows.map((r,i)=>({...r,i,p:r.tot?r.tidak/r.tot:null}));
+  const sum=L=>{const t={tot:0,tidak:0,lain:0,aktif:0};L.forEach(r=>{t.tot+=r.tot;t.tidak+=r.tidak;t.lain+=r.lain;t.aktif+=r.aktif});t.p=t.tot?t.tidak/t.tot:null;return t};
+  const T=sum(rows),mx=Math.max(0,...rows.map(r=>r.p||0));
+  $('#sub').textContent='Data scan sampai tanggal '+A.days+' dari '+A.total+' hari.';
+  $('#detbox').hidden=true;
+  $('#strip').innerHTML=
+   `<div><div class="lab">Total scan bulan ini</div><div class="big">${fm(T.tot)}</div><div class="sm">unit di-scan, sudah dikurangi retur</div></div>`+
+   `<div><div class="lab">Perlu follow up (tidak aktif)</div><div class="big">${fm(T.tidak)}</div><div class="sm">${pa(T.p)} dari total scan, belum ada tanggal aktivasi</div></div>`+
+   `<div><div class="lab">Aktif di bulan lain</div><div class="big">${fm(T.lain)}</div><div class="sm">di-scan bulan ini, aktif bulan lain, tidak masuk pencapaian</div></div>`+
+   `<div><div class="lab">Scan aktif</div><div class="big">${fm(T.aktif)}</div><div class="sm">${pa(T.tot?T.aktif/T.tot:null)} dari total scan, masuk pencapaian</div></div>`;
+  const row=r=>`<tr tabindex="0" data-i="${r.i}" aria-expanded="${sel===r.i}" class="${sel===r.i?'lr on':''}"><td class="stn"><div class="nm">${esc(r.n)}</div><div class="tm">${esc(AAREA[r.g]||'')}</div></td><td>${fm(r.tot)}</td><td><b>${fm(r.tidak)}</b></td>`+
+   `<td class="l"><div class="pb"><div class="trk"><div class="fil" style="width:${mx?(r.p||0)/mx*100:0}%"></div></div><span>${pa(r.p)}</span></div></td><td>${fm(r.lain)}</td><td>${fm(r.aktif)}</td></tr>`;
+  const tr=(cls,lab,t)=>`<tr class="${cls}"><td>${esc(lab)}</td><td>${fm(t.tot)}</td><td>${fm(t.tidak)}</td><td class="l">${pa(t.p)}</td><td>${fm(t.lain)}</td><td>${fm(t.aktif)}</td></tr>`;
+  let body='';
+  AGRP.forEach(g=>{
+    const L=rows.filter(r=>r.g===g).sort((a,b)=>AORD.indexOf(a.k)-AORD.indexOf(b.k));
+    if(!L.length)return;
+    L.forEach(r=>{body+=row(r)+(sel===r.i?`<tr class="dly on"><td colspan="6">${actDetail(r)}</td></tr>`:'')});
+    if(L.length>1)body+=tr('sub',(AAREA[g]||'Lainnya')+' Total',sum(L));
+  });
+  $('#atbl').innerHTML=`<thead><tr><th>Leader</th><th>Total scan</th><th>Tidak aktif</th><th class="l">% tidak aktif</th><th>Aktif bulan lain</th><th>Scan aktif</th></tr></thead><tbody>${body}${tr('tot','Grand Total',T)}</tbody>`;
+  $('#note').innerHTML=`<p>Total scan = unit yang di-scan di bulan ini (net, retur sudah mengurangi). Tidak aktif = sudah di-scan tetapi belum punya tanggal aktivasi, ini yang perlu di-follow up. Aktif bulan lain = di-scan bulan ini tetapi aktifnya di bulan lain, tidak masuk pencapaian. Scan aktif = di-scan dan aktif di bulan ini, masuk pencapaian. % tidak aktif = tidak aktif ÷ total scan, panjang batang dibandingkan dengan leader tertinggi.</p><p>Klik satu leader untuk melihat daftar unit yang belum aktif: toko, produk, tanggal scan, berapa hari sejak scan, dan IMEI-nya. Umur dihitung sampai tanggal ${A.days}.</p><p>${esc(SRC)}</p>`;
+}
+/* ===== Aktif belum scan ===== */
+let UD=null;
+function setU(u){UD=u}
+const umur=(U,a)=>a?Math.max(0,Math.round((Date.UTC(U.y,U.m-1,U.days)-Date.UTC(a[0],a[1]-1,a[2]))/864e5)):null;
+const adate=a=>a?a[2]+' '+MON[a[1]-1]:'–';
+function uDetail(r){
+  const U=UD,L=U.units.filter(u=>u.l===r.k);
+  if(!L.length)return `<div class="ul"><h3>${esc(r.n)}: semua unit aktif sudah di-scan.</h3></div>`;
+  const hx=L.some(u=>u.x),dh=L.some(u=>u.d!==undefined);
+  return `<div class="ul"><h3>${esc(r.n)}: ${fm(L.length)} unit aktif belum di-scan, urut dari aktivasi terlama</h3><table class="ut"><thead><tr><th>IMEI</th><th>${dh?'Dealer':'Toko'}</th><th>Produk</th><th>Tgl aktif</th><th class="r">Umur</th>${hx?'<th>Keterangan</th>':''}</tr></thead><tbody>`+
+   L.map(u=>`<tr><td class="mono">${esc(u.i)}</td><td>${esc(dh?(u.d||'(dealer tidak tercatat)'):(u.s||'(toko tidak tercatat)'))}</td><td>${esc(u.p)}</td><td class="mono">${adate(u.a)}</td><td class="r mono">${umur(U,u.a)} hari</td>${hx?`<td>${esc(u.x||'')}</td>`:''}</tr>`).join('')+`</tbody></table></div>`;
+}
+function renderUns(){
+  $('#detbox').hidden=true;
+  if(!UD){
+    $('#sub').textContent='';$('#strip').innerHTML='';$('#atbl').innerHTML='';
+    $('#note').innerHTML='<p>Data aktif belum di-scan belum tersedia. Buka bagian Hitung dari file di atas, unggah file SCAN AKTIF yang punya sheet AKTIF, lalu klik Hitung pencapaian.</p>';return}
+  const U=UD,rows=U.rows.map((r,i)=>({...r,i,p:r.tot?r.un/r.tot:null}));
+  const sum=L=>{const t={tot:0,un:0};L.forEach(r=>{t.tot+=r.tot;t.un+=r.un});t.p=t.tot?t.un/t.tot:null;return t};
+  const T=sum(rows),mx=Math.max(0,...rows.map(r=>r.p||0));
+  const lama=U.units.filter(u=>umur(U,u.a)>=3).length,top=rows.slice().sort((a,b)=>b.un-a.un)[0];
+  const lg=U.units.some(u=>u.d===undefined);
+  $('#sub').textContent='Data aktivasi sampai tanggal '+U.days+' dari '+U.total+' hari.'+(lg?' Daftar unit masih menampilkan nama toko dari upload lama. Upload ulang file SCAN AKTIF agar tampil nama dealer.':'');
+  $('#strip').innerHTML=
+   `<div><div class="lab">Aktif belum di-scan</div><div class="big">${fm(T.un)}</div><div class="sm">unit sudah aktif tetapi belum punya tanggal scan</div></div>`+
+   `<div><div class="lab">Persentase belum di-scan</div><div class="big">${pa(T.p)}</div><div class="sm">dari ${fm(T.tot)} unit aktif</div></div>`+
+   `<div><div class="lab">Menunggu 3 hari atau lebih</div><div class="big">${fm(lama)}</div><div class="sm">aktif sampai tanggal ${U.days-3} dan belum di-scan, perlu dikejar</div></div>`+
+   `<div><div class="lab">Leader terbanyak</div><div class="big">${top&&top.un>0?esc(top.n.split(' ')[0]):'–'}</div><div class="sm">${top&&top.un>0?fm(top.un)+' unit belum di-scan ('+pa(top.p)+' dari aktif miliknya)':'tidak ada unit yang belum di-scan'}</div></div>`;
+  const row=r=>`<tr tabindex="0" data-i="${r.i}" aria-expanded="${sel===r.i}" class="${sel===r.i?'lr on':''}"><td class="stn"><div class="nm">${esc(r.n)}</div><div class="tm">${esc(AAREA[r.g]||'')}</div></td><td>${fm(r.tot)}</td><td><b>${fm(r.un)}</b></td>`+
+   `<td class="l"><div class="pb"><div class="trk"><div class="fil" style="width:${mx?(r.p||0)/mx*100:0}%"></div></div><span>${pa(r.p)}</span></div></td><td>${fm(r.tot-r.un)}</td></tr>`;
+  const tr=(cls,lab,t)=>`<tr class="${cls}"><td>${esc(lab)}</td><td>${fm(t.tot)}</td><td>${fm(t.un)}</td><td class="l">${pa(t.p)}</td><td>${fm(t.tot-t.un)}</td></tr>`;
+  let body='';
+  AGRP.forEach(g=>{
+    const L=rows.filter(r=>r.g===g).sort((a,b)=>AORD.indexOf(a.k)-AORD.indexOf(b.k));
+    if(!L.length)return;
+    L.forEach(r=>{body+=row(r)+(sel===r.i?`<tr class="dly on"><td colspan="5">${uDetail(r)}</td></tr>`:'')});
+    if(L.length>1)body+=tr('sub',(AAREA[g]||'Lainnya')+' Total',sum(L));
+  });
+  $('#atbl').innerHTML=`<thead><tr><th>Leader</th><th>Total aktif</th><th>Belum di-scan</th><th class="l">% belum di-scan</th><th>Sudah di-scan</th></tr></thead><tbody>${body}${tr('tot','Grand Total',T)}</tbody>`;
+  $('#note').innerHTML=`<p>Total aktif = semua unit di sheet AKTIF. Belum di-scan = unit yang sudah punya tanggal aktivasi tetapi tanggal penjualannya kosong, artinya belum di-scan. Sudah di-scan = total aktif dikurangi belum di-scan. % belum di-scan = belum di-scan ÷ total aktif, panjang batang dibandingkan dengan leader tertinggi.</p><p>Klik satu leader untuk melihat daftar unitnya: IMEI, dealer, produk, tanggal aktif, dan umur. Umur dihitung dari tanggal aktif sampai tanggal ${U.days}. Unit yang baru aktif satu atau dua hari terakhir bisa saja memang belum sempat di-scan. Kolom Keterangan muncul kalau IMEI itu punya catatan di sheet SOLD, misalnya scan yang dibatalkan (−1).</p>`;
+}
+/* ===== Per promotor ===== */
+let PD=null,pq='',plf='',pjf='',psf='',pif='',pof='est',PSRC='Target promotor dari file Target Promotor November 2026. Pencapaian dari data SCAN AKTIF 1 sampai 17 November 2026, ditambah V80 Lite Oktober.';
+function setP(p){PD=p;pq=plf=pjf=psf=pif='';pof='est';$('#pq').value='';$('#ps').value='';$('#pi').value='';$('#po').value='est';
+  fill('#pl','Semua leader',[...new Set(p.rows.map(x=>x.l))].sort());
+  fill('#pj','Semua jabatan',[...new Set(p.rows.map(x=>x.j))].sort())}
+function pdata(){const k=TI[tab];return PD.rows.map((p,i)=>{const d=p.d[k],r=calc({n:p.n,g:p.l+' · '+p.s,t:p.t[k],d,a:d.reduce((x,y)=>x+y,0)});let idle=null;
+    if(!p.nt){idle=0;for(let x=d.length-1;x>=0&&d[x]<=0;x--)idle++;if(p.jn&&p.jn[0]===PD.y&&p.jn[1]===PD.m&&p.jn[2]<=d.length)idle=Math.min(idle,d.length-p.jn[2]+1)}
+    return {...r,spike:0,i,l:p.l,s:p.s,j:p.j,nt:p.nt,jn:p.jn,idle,st:stStatus(r)}}).filter(r=>!(r.nt&&r.a<=0))}
+function renderPro(){
+  $('#sub').textContent='Data sampai tanggal '+N+' dari '+M+' hari. Time gone '+pc(TG)+'.';
+  $('#tabs').innerHTML=Object.keys(NAMES).map(k=>`<button data-k="${k}" aria-pressed="${k===tab}">${NAMES[k]}</button>`).join('');
+  const all=pdata(),hasT=all.filter(r=>r.t>0);
+  const sumA=hasT.reduce((s,r)=>s+r.a,0),sumT=hasT.reduce((s,r)=>s+r.t,0),T=calc({n:'Promotor',t:sumT,a:sumA,d:Array(N).fill(0)});
+  const jalur=hasT.filter(r=>r.a>0&&r.estp>=1).length,nol=hasT.filter(r=>r.a<=0).length;
+  const ex=all.filter(r=>!(r.t>0)&&r.a>0),exA=ex.reduce((s,r)=>s+r.a,0);
+  $('#strip').innerHTML=
+   `<div><div class="lab">Pencapaian promotor, ${NAMES[tab]}</div><div class="big">${pc(T.pct)}</div><div class="sm">${fm(T.a)} dari target ${fm(T.t)} di ${fm(hasT.length)} promotor</div>${exA?`<div class="sm">Belum termasuk ${fm(exA)} unit dari ${fm(ex.length)} pelapor tanpa target</div>`:''}</div>`+
+   `<div><div class="lab">Estimasi akhir periode</div><div class="big">${pc(T.estp)}</div><div class="sm">sekitar ${fm(T.est)} unit dari target ${fm(T.t)}</div></div>`+
+   `<div><div class="lab">Promotor di jalur</div><div class="big">${fm(jalur)}</div><div class="sm">dari ${fm(hasT.length)} promotor ber-target, estimasi 100% atau lebih</div></div>`+
+   `<div><div class="lab">Belum ada penjualan</div><div class="big">${fm(nol)}</div><div class="sm">promotor ber-target tanpa satu unit pun sampai tanggal ${N}</div></div>`;
+  const q=pq.trim().toUpperCase();
+  const F=all.filter(r=>(!q||r.n.toUpperCase().includes(q)||r.s.toUpperCase().includes(q))&&(!plf||r.l===plf)&&(!pjf||r.j===pjf)&&(!psf||r.st[2]===psf)&&(!pif||(r.idle!=null&&r.idle>=+pif)));
+  const cmp={est:(a,b)=>((a.t>0)?0:1)-((b.t>0)?0:1)||(a.t>0?a.estp-b.estp:b.a-a.a)||b.t-a.t||a.n.localeCompare(b.n),esth:(a,b)=>((a.t>0)?0:1)-((b.t>0)?0:1)||(a.t>0?b.estp-a.estp:b.a-a.a)||b.t-a.t||a.n.localeCompare(b.n),idl:(a,b)=>(b.idle==null?-1:b.idle)-(a.idle==null?-1:a.idle)||b.t-a.t||a.n.localeCompare(b.n),ach:(a,b)=>b.a-a.a||a.n.localeCompare(b.n),tgt:(a,b)=>b.t-a.t||a.n.localeCompare(b.n),nm:(a,b)=>a.n.localeCompare(b.n)}[pof];
+  F.sort(cmp);
+  $('#pcnt').textContent='Menampilkan '+fm(F.length)+' dari '+fm(all.length)+' promotor';
+  const row=r=>`<tr tabindex="0" data-s="${r.i}" class="${sel===r.i?'lr on':''}"><td class="stn"><div class="nm">${esc(r.n)}<span class="jb"> - ${esc(r.j)}</span></div><div class="tm">${esc(r.l)} · ${esc(r.s)}${r.jn&&r.jn[0]===PD.y&&r.jn[1]===PD.m&&r.jn[2]<=N?' · join '+r.jn[2]+' '+MON[PD.m-1]:''}</div></td>`+
+   `<td class="l"><div class="pb"><div class="trk"><div class="fil ${r.t>0&&r.pct<TG?'lag':''}" style="width:${Math.min(r.pct||0,1)*100}%"></div><div class="tick" style="left:${TG*100}%"></div></div><span>${pc(r.pct)}</span></div></td>`+
+   `<td>${fm(r.t)}</td><td>${fm(r.a)}</td><td>${fm(r.need,1)}</td><td>${estc(r)}</td><td class="l"><span class="pill ${r.st[1]}">${r.st[0]}</span>${r.idle>0?`<span class="eu">${r.idle} hari tanpa jual</span>`:''}</td></tr>`;
+  $('#ptbl').innerHTML=`<thead><tr><th>Promotor</th><th class="l pw">Pencapaian (garis hitam: time gone)</th><th>Target</th><th>Achieve</th><th>Perlu per hari</th><th>Estimasi</th><th class="l">Status</th></tr></thead><tbody>`+
+   (F.length?F.map(r=>row(r)+(sel===r.i?daily(r,'data-s'):'')).join(''):`<tr><td colspan="8" class="l">Tidak ada promotor yang cocok. Ubah kata kunci atau filter.</td></tr>`)+`</tbody>`;
+  const r=all.find(x=>x.i===sel);
+  $('#detbox').hidden=!r;
+  if(r)$('#det').innerHTML=detail(r);
+  $('#note').innerHTML=`<p>Pencapaian per promotor dihitung dari nama pelapor di data scan, dengan aturan yang sama seperti per leader dan per toko: unit dihitung jika di-scan dan aktif di bulan yang sama, dan V80 Lite bulan lalu dicatat di tanggal 1. Promotor yang pindah toko tetap dihitung atas namanya. Pelapor yang tidak ada di file target (misalnya staf toko, RM, atau leader yang scan sendiri) diberi target 0 dan berstatus Tanpa target; saring lewat kolom jabatan.</p><p>Status: Di jalur = estimasi 100% atau lebih, Waspada = 70 sampai 99%, Tertinggal = di bawah 70%, Belum ada penjualan = punya target tetapi belum ada unit. Klik satu promotor untuk melihat pencapaian per tanggal. Target V80 5G dan V80 FE belum dipakai.</p><p>Hari tanpa jual = jumlah hari berturut-turut, sampai tanggal ${N}, tanpa penjualan pada tipe yang sedang dipilih (Semua tipe, 3MIO+, atau V80 Lite). Tanggal terakhir ikut dihitung, jadi kalau data ditarik sebelum hari itu selesai, angkanya bisa belum lengkap. Promotor yang baru join bulan ini dihitung sejak tanggal join. Hari libur promotor belum bisa dikenali. Filter dan urutan ini hanya berlaku untuk promotor yang ada di file target.</p><p>${esc(PSRC)}</p>`;
+}
+/* ===== Catatan per toko: tersimpan otomatis ===== */
+const NOTES=new Map(),DRAFT=new Map(),BUSY=new Set(),TMR=new Map(),SN=new Map(),HC=new Map(),LSK='catatan_toko_v1';
+let NDB=null,NMODE='wait',NRO=false,NLOAD=false,NSTALE=false,NERR=false;
+function hid(n){let v=HC.get(n);if(v)return v;const s=nk(n);let a=0xdeadbeef,b=0x41c6ce57;
+  for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);a=Math.imul(a^c,2654435761);b=Math.imul(b^c,1597334677)}
+  a=Math.imul(a^(a>>>16),2246822507)^Math.imul(b^(b>>>13),3266489909);
+  b=Math.imul(b^(b>>>16),2246822507)^Math.imul(a^(a>>>13),3266489909);
+  v='s'+(4294967296*(2097151&b)+(a>>>0)).toString(36);HC.set(n,v);SN.set(v,String(n));return v}
+const noteText=n=>{const id=hid(n);return DRAFT.has(id)?DRAFT.get(id):(NOTES.get(id)||{text:''}).text};
+const hasNote=n=>noteText(n).trim()!=='';
+const nlock=()=>NRO||NMODE==='wait'||(NLOAD&&!NSTALE);
+const fmtAt=t=>{try{return t?new Date(t).toLocaleString('id-ID',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):''}catch(e){return ''}};
+const nmeta=id=>{const x=NOTES.get(id);return x&&x.text?'Disimpan '+fmtAt(x.at):''};
+function nstat(id,t,er){const e=document.querySelector('[data-ns="'+id+'"]');if(e){e.textContent=t;e.className='ns'+(er?' er':'')}}
+function autosize(t){if(!t.offsetParent)return;t.style.height='auto';t.style.height=Math.min(t.scrollHeight+2,320)+'px'}
+function autosizeAll(){document.querySelectorAll('#stbl textarea.nt').forEach(t=>{if(t.value)autosize(t)})}
+function ncell(r){const id=hid(r.n),lk=nlock();
+  return `<td class="nc l"><textarea class="nt" data-id="${id}" rows="2" maxlength="2000" placeholder="${lk&&!NRO?'Memuat catatan':'Tulis catatan'}" aria-label="Catatan toko ${esc(r.n)}"${lk?' readonly':''}>\n${esc(noteText(r.n))}</textarea><span class="ns" data-ns="${id}">${DRAFT.has(id)?'Belum disimpan':nmeta(id)}</span></td>`}
+function nline(){const e=$('#nmsg');if(!e)return;
+  const c=ST?ST.stores.filter(s=>hasNote(s.n)).length:0;let t;
+  if(NMODE==='wait'||NLOAD)t='Memuat catatan…'+(NSTALE?' Penyimpanan catatan belum bisa dijangkau, jadi data yang tampil mungkin belum terbaru.':'');
+  else t=(NMODE==='local'?'Penyimpanan bersama tidak tersedia di tampilan ini, jadi catatan hanya tersimpan di browser ini. ':(NRO?'':'Catatan tersimpan otomatis. '))+fm(c)+' toko sudah ada catatan.';
+  if(NERR)t+=' Catatan tidak bisa dimuat dari penyimpanan.';
+  if(NRO)t+=' Hanya pemilik dan editor yang bisa mengubah catatan.';
+  e.textContent=t}
+function lockAll(){const lk=nlock();document.querySelectorAll('#stbl textarea.nt').forEach(t=>{t.readOnly=lk;t.placeholder=lk&&!NRO?'Memuat catatan':'Tulis catatan'})}
+function applyNotes(){document.querySelectorAll('#stbl textarea.nt').forEach(t=>{const id=t.dataset.id;if(DRAFT.has(id)||BUSY.has(id)||document.activeElement===t)return;const v=(NOTES.get(id)||{text:''}).text;if(t.value!==v){t.value=v;autosize(t)}nstat(id,nmeta(id))})}
+const lsRead=()=>{try{return JSON.parse(localStorage.getItem(LSK)||'{}')||{}}catch(e){return {}}};
+const flushAll=()=>[...DRAFT.keys()].forEach(save);
+async function save(id){
+  clearTimeout(TMR.get(id));
+  if(!DRAFT.has(id)||BUSY.has(id)||nlock())return;
+  const val=DRAFT.get(id).replace(/\s+$/,''),old=NOTES.get(id);
+  if(val===(old?old.text:'')){DRAFT.delete(id);nstat(id,nmeta(id));nline();return}
+  BUSY.add(id);nstat(id,'Menyimpan…');
+  const at=Date.now(),name=SN.get(id)||'';
+  try{
+    if(NMODE==='db'){
+      const ref=NDB.collection('notes').doc(id),w=()=>val===''?ref.delete():ref.set({n:name,text:val,at});
+      try{await w()}catch(e){if(e&&e.code==='unavailable'){await new Promise(r=>setTimeout(r,500+Math.random()*900));await w()}else throw e}
+    }else{
+      const o=lsRead();if(val==='')delete o[id];else o[id]={n:name,text:val,at};localStorage.setItem(LSK,JSON.stringify(o));
+    }
+    if(val==='')NOTES.delete(id);else NOTES.set(id,{n:name,text:val,at});
+    if(DRAFT.has(id)&&DRAFT.get(id).replace(/\s+$/,'')===val)DRAFT.delete(id);
+    nstat(id,DRAFT.has(id)?'Belum disimpan':nmeta(id));
+  }catch(e){
+    const c=e&&e.code;
+    if(c==='invalid_argument'||c==='revoked'||c==='not_granted'){NRO=true;lockAll()}
+    nstat(id,c==='quota_exceeded'?'Penyimpanan penuh, catatan tidak tersimpan.':NRO?'Tidak tersimpan: tidak punya izin mengubah.':'Gagal menyimpan. Klik di luar kolom untuk mencoba lagi.',1);
+    BUSY.delete(id);nline();return
+  }
+  BUSY.delete(id);nline();
+  if(DRAFT.has(id))save(id)
+}
+document.addEventListener('input',e=>{const t=e.target;if(!(t.classList&&t.classList.contains('nt')))return;
+  const id=t.dataset.id;DRAFT.set(id,t.value);autosize(t);nstat(id,'Belum disimpan');
+  clearTimeout(TMR.get(id));TMR.set(id,setTimeout(()=>save(id),900))});
+document.addEventListener('focusout',e=>{const t=e.target;if(t.classList&&t.classList.contains('nt'))save(t.dataset.id)});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)flushAll()});
+addEventListener('pagehide',flushAll);
+function onNotes(snap){
+  const keep=new Map();
+  snap.docs.forEach(d=>{const v=d.data()||{};if(typeof v.text==='string'&&v.text.trim())keep.set(d.id,{n:String(v.n||''),text:v.text,at:+v.at||0})});
+  NOTES.clear();keep.forEach((v,k)=>NOTES.set(k,v));
+  if(NLOAD&&!snap.metadata.fromCache){NLOAD=false;NSTALE=false;lockAll();flushAll()}
+  applyNotes();nline()}
+async function initNotes(){
+  let db=null,user=null;
+  try{if(window.claude&&claude.use)db=await claude.use('db')}catch(e){}
+  try{if(db)user=await claude.use('user')}catch(e){}
+  if(!db){
+    NMODE='local';NLOAD=false;const o=lsRead();
+    Object.keys(o).forEach(k=>{const v=o[k];if(v&&typeof v.text==='string'&&v.text)NOTES.set(k,{n:String(v.n||''),text:v.text,at:+v.at||0})});
+    lockAll();applyNotes();nline();flushAll();loadLocal();return}
+  let can=null;try{if(user)can=await user.canEdit()}catch(e){}
+  if(can===false)NRO=true;
+  SNAPDB=db;SNAPCAN=can;SNAPT=Date.now();snapLoad(true);
+  NDB=db;NMODE='db';NLOAD=true;lockAll();nline();
+  const NT=setTimeout(()=>{if(NLOAD){NSTALE=true;lockAll();nline();flushAll()}},10000);
+  const fail=e=>{clearTimeout(NT);NLOAD=false;NSTALE=false;NERR=true;if(e&&e.code==='revoked')NRO=true;lockAll();nline();flushAll()};
+  try{db.collection('notes').onSnapshot(snap=>{onNotes(snap);if(!NLOAD)clearTimeout(NT)},fail)}catch(e){fail(e)}
+}
+/* ===== Simpan hasil upload: db bersama (semua perangkat), cadangan localStorage ===== */
+const SK='snap_v1',SPARTS=['D','S','P','A','U'],SNAPDEF=$('#umsg').textContent;
+let SNAPDB=null,SNAPCAN=null,SNAPV=null,SNAPBUSY=false,SNAPLOAD=false,SNAPT=0;
+const dkey=d=>d?`${d.y||0}-${String(d.m||0).padStart(2,'0')}-${String(d.days||0).padStart(2,'0')}`:'';
+const tmo=(p,ms)=>Promise.race([p,new Promise((_,no)=>setTimeout(()=>no({code:'timeout'}),ms))]);
+function applyData(r,reset){setD(r.D);setS(r.S);setP(r.P);setA(r.A);setU(r.U||null);SRC=r.msg;STSRC=r.ts;PSRC=r.pts;if(reset)tab='all';sel=null;render()}
+function snapApply(meta,o){
+  if(!o||!o.D||!o.S||!o.P||!o.A)return false;
+  if(dkey(o.D)<dkey(DEMO))return false;
+  applyData({D:o.D,S:o.S,P:o.P,A:o.A,U:o.U||null,msg:meta.msg||'',ts:meta.ts||'',pts:meta.pts||''},false);
+  SNAPV=meta.v;$('#updet').open=false;
+  $('#umsg').textContent='Memakai data dari upload terakhir ('+fmtAt(meta.at)+'). '+[meta.msg,meta.ts,meta.pts].filter(Boolean).join(' ');
+  return true}
+async function saveSnap(r){
+  SNAPBUSY=true;
+  try{
+    const at=Date.now(),v=String(at),meta={v,at,msg:r.msg||'',ts:r.ts||'',pts:r.pts||'',dk:dkey(r.D)},parts={D:r.D,S:r.S,P:r.P,A:r.A,U:r.U||null};
+    if(SNAPDB){
+      if(SNAPCAN===false)return 'ro';
+      const w=async(id,data)=>{const ref=SNAPDB.collection('snap').doc(id);
+        try{await ref.set(data)}catch(e){if(e&&e.code==='unavailable'){await new Promise(x=>setTimeout(x,500+Math.random()*900));await ref.set(data)}else throw e}};
+      for(const k of SPARTS)await w(k,{v,json:JSON.stringify(parts[k])});
+      await w('meta',meta);
+      SNAPV=v;return 'db'}
+    try{localStorage.setItem(SK,JSON.stringify({meta,parts}));return 'local'}catch(e){return 'none'}
+  }finally{SNAPBUSY=false}}
+function snapNote(h){
+  if(h==='db')return 'Sudah disimpan, jadi tampil juga di HP dan perangkat lain.';
+  if(h==='local')return 'Disimpan di browser ini saja.';
+  if(h==='none')return 'Tidak bisa disimpan di browser ini.';
+  if(h==='ro'||h==='err:not_granted'||h==='err:revoked')return 'Belum disimpan untuk perangkat lain: hanya pemilik dan editor yang bisa menyimpan.';
+  if(h==='err:quota_exceeded')return 'Gagal menyimpan: penyimpanan halaman penuh.';
+  if(h==='err:invalid_argument')return 'Gagal menyimpan: data terlalu besar.';
+  return 'Gagal menyimpan untuk perangkat lain'+(h&&h.length>4?' ('+h.slice(4)+')':'')+'. Klik Hitung pencapaian lagi.'}
+async function snapGet(){
+  const col=SNAPDB.collection('snap'),m=await col.doc('meta').get();
+  if(!m.exists)return null;
+  const mt=m.data()||{};
+  if(mt.v===SNAPV)return 'same';
+  const ds=await Promise.all(SPARTS.map(k=>col.doc(k).get())),o={};
+  for(let i=0;i<SPARTS.length;i++){const d=ds[i].exists?ds[i].data():null;if(!d){if(SPARTS[i]==='U'){o.U=null;continue}return 'retry'}if(d.v!==mt.v)return 'retry';o[SPARTS[i]]=JSON.parse(d.json)}
+  return {meta:mt,o}}
+async function snapLoad(first){
+  if(!SNAPDB||SNAPBUSY||SNAPLOAD)return;
+  SNAPLOAD=true;const u=$('#umsg');
+  if(first)u.textContent='Memuat data terbaru…';
+  try{
+    let g=await tmo(snapGet(),10000);
+    if(g==='retry'){await new Promise(x=>setTimeout(x,1500));g=await tmo(snapGet(),10000)}
+    const ok=g&&g!=='same'&&g!=='retry'&&snapApply(g.meta,g.o);
+    if(first&&!ok&&g!=='same')u.textContent=SNAPDEF
+  }catch(e){if(first)u.textContent='Data terbaru belum bisa dimuat'+(DEMO?', jadi ditampilkan data bawaan sampai tanggal '+DEMO.days+'.':'.')}
+  SNAPLOAD=false}
+function loadLocal(){try{const j=JSON.parse(localStorage.getItem(SK)||'null');if(j&&j.meta&&j.parts)snapApply(j.meta,j.parts)}catch(e){}}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&SNAPDB&&Date.now()-SNAPT>30000){SNAPT=Date.now();snapLoad(false)}});
+if(DEMO){setD(DEMO);setS(DEMO_S);setP(DEMO_P);setA(DEMO_A);setU(DEMO_U)}else $('#updet').open=true;
+render();initNotes();
+</script>
+</body>
+</html>
